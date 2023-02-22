@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+
+int main()
+{
+    ofstream out("text.bin", ios_base::binary);
+    int n,a,b;
+    cin >> n;
+    for (int i = 1; i <= n; i++)
+    {
+        a = i * i;
+        out.write((char*)&a, sizeof(int));
+    }
+    out.close();
+    ifstream in("text.bin", ios_base::binary);
+    for (int i = 1; i <= n; i++)
+    {
+        in.read((char*)&b, sizeof(int));
+        if (i % 2 != 0)
+        {
+            cout << b << ' ';
+        }
+    }
+    in.close();
+    return 0;
+}
