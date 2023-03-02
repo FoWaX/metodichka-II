@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+int F(long long n, int k)
+{
+    if (n != 0)
+    {
+        k++;
+        n /= 10;
+        return F(n, k);
+    }
+    else
+    {
+        return k;
+    }
+}
+
+int main()
+{
+    long long n;
+    int k;
+    cin >> n;
+    k = 0;
+    cout << F(n, k);
+}
+
