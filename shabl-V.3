@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+template <typename T> void vvod(T n, T *arr)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cin >> arr[i];
+	}
+}
+
+template <typename T> void vivod(T n, T *arr)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << arr[i] << ' ';
+	}
+}
+
+template <typename T> void resh(T a,T b,T n,T *arr)
+{
+	for (int i = 0; i < n; i++)
+	{
+		if ((arr[i] <= b) && (arr[i] >= a))
+		{
+			arr[i] = 0;
+		}
+	}
+}
+
+int main()
+{
+	int a, b;
+	cin >> a >> b;
+	int n;
+	cin >> n;
+	int* arr = new int[n];
+	vvod (n, arr);
+	resh (a, b, n, arr);
+	vivod(n, arr);
+	delete[] arr;
+}
