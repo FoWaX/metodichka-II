@@ -1,29 +1,39 @@
 #include <iostream>
 using namespace std;
 
-template <typename T> void vvod(T n, T *arr)
+template <typename T> void vvod(T n,T m, T** arr)
 {
 	for (int i = 0; i < n; i++)
 	{
-		cin >> arr[i];
-	}
-}
-
-template <typename T> void vivod(T n, T *arr)
-{
-	for (int i = 0; i < n; i++)
-	{
-		cout << arr[i] << ' ';
-	}
-}
-
-template <typename T> void resh(T a,T b,T n,T *arr)
-{
-	for (int i = 0; i < n; i++)
-	{
-		if ((arr[i] <= b) && (arr[i] >= a))
+		for (int j = 0; j < m; j++)
 		{
-			arr[i] = 0;
+			cin >> arr[i][j];
+		}
+	}
+}
+
+template <typename T> void vivod(T n,T m, T** arr)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cout << arr[i][j] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+template <typename T> void resh(T a, T b, T n,T m, T** arr)
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if ((arr[i][j] <= b) && (arr[i][j] >= a))
+			{
+				arr[i][j] = 0;
+			}
 		}
 	}
 }
@@ -32,11 +42,15 @@ int main()
 {
 	int a, b;
 	cin >> a >> b;
-	int n;
-	cin >> n;
-	int* arr = new int[n];
-	vvod (n, arr);
-	resh (a, b, n, arr);
-	vivod(n, arr);
+	int n, m;
+	cin >> n >> m;
+	int** arr = new int* [n];
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = new int[m];
+	}
+	vvod(n, m, arr);
+	resh(a, b, n, m, arr);
+	vivod(n, m, arr);
 	delete[] arr;
 }
