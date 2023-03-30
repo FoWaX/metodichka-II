@@ -1,1 +1,46 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
 
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+struct chel {
+    string fam, imya, otch;
+    int god, z1, z2, z3, z4, z5, grupp;
+};
+
+int main()
+{
+    chel* x = new chel[6];
+    int i = 0;
+    int f = 0;
+    while (in.peek() != EOF)
+    {
+        in >> x[i].grupp >> x[i].fam >> x[i].imya >> x[i].otch >> x[i].god
+            >> x[i].z1 >> x[i].z2 >> x[i].z3 >> x[i].z4 >> x[i].z5;
+        i++;
+        f++;
+    }
+
+    for (int i = 0; i < f - 1; i++)
+    {
+        for (int j = 0; j < f - 1 - i; j++)
+        {
+            if (x[j].fam > x[j + 1].fam)
+            {
+                swap(x[j], x[j + 1]);
+            }
+        }
+    }
+    
+    for (int i = 0; i < f; i++)
+    {
+        out << x[i].grupp << ' ' << x[i].fam << ' ' << x[i].imya << ' ' << x[i].otch << ' ' << x[i].god 
+            << ' ' << x[i].z1 << ' ' << x[i].z2 << ' ' << x[i].z3 << ' ' << x[i].z4 << ' ' << x[i].z5 << endl;
+    }
+
+    in.close();
+    out.close();
+}
