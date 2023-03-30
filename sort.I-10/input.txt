@@ -1,3 +1,6 @@
 141 smislov anton sergeyevich 2004 2 2 2 2 2
 111 smisl misha antonovich 2003 2 2 3 5 1
 181 antonov anton antonovich 2005 5 5 5 5 5
+211 figov anatoliy anatol 2004 3 3 4 5 1
+215 figob zanatoliy anatolief 2004 3 3 4 5 1
+211 leshiy anata levyova 2004 3 5 4 5 2
