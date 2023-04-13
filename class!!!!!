@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+
+class complex {
+    double rePart, imagPart;
+public:
+    complex operator +(const complex& other)//перегрузка +
+    {
+        complex temp;
+        temp.rePart = this->rePart + other.rePart;
+        temp.imagPart = this->imagPart + other.imagPart;
+        return temp;
+    }
+
+    complex operator -(const complex& other)//перегрузка -
+    {
+        complex temp;
+        temp.rePart = this->rePart - other.rePart;
+        temp.imagPart = this->imagPart - other.imagPart;
+        return temp;
+    }
+
+    complex operator *(const complex& other)//перегрузка *
+    {
+        complex temp;
+        temp.rePart = this->rePart * other.rePart;
+        temp.imagPart = this->imagPart * other.imagPart;
+        return temp;
+    }
+
+    complex operator /(const complex& other)//перегрузка /
+    {
+        complex temp;
+        temp.rePart = this->rePart / other.rePart;
+        temp.imagPart = this->imagPart / other.imagPart;
+        return temp;
+    }
+
+    bool operator == (const complex & other)//перегрузка ==
+    {
+        return this->rePart == other.rePart && this->imagPart == other.imagPart;
+    }
+
+
+    void print()//вывод комплексного числа
+    {
+        cout << rePart << " + " << imagPart << 'i' << endl;
+    }
+
+
+    complex(double rePart, double imagPart)//конструктор ввода
+    {
+        this->rePart = rePart;
+        this->imagPart = imagPart;
+    }
+
+
+    complex()//конструктор по умолчанию
+    {
+        rePart = 0;
+        imagPart = 0;
+    }
+
+
+    void sopr(double rePart, double imagPart)//создание сопряженног числа
+    {
+        this->rePart = rePart;
+        this->imagPart = -imagPart;
+    }
+};
+
+
+void sravn(complex a, complex b)//сравнение двух комплексных чисел
+{
+    if (a == b) cout << "ravni" << endl;
+    else cout << "ne ravni" << endl;
+}
+
+
+int main()
+{
+    complex a(25.02, 1.01);
+    complex b(23.01, 21.02);
+    a.print();
+    b.print();
+
+    sravn(a, b);
+
+    complex c = a + b;
+    c.print();
+
+    c = a - b;
+    c.print();
+
+    c = a * b;
+    c.print();
+
+    c = a / b;
+    c.print();
+
+    return 0;
+}
