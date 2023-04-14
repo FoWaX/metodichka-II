@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 class complex {
@@ -23,26 +24,26 @@ public:
     complex operator *(const complex& other)//перегрузка *
     {
         complex temp;
-        temp.rePart = this->rePart * other.rePart;
-        temp.imagPart = this->imagPart * other.imagPart;
+        temp.rePart = this->rePart * other.rePart-this->imagPart * other.imagPart;
+        temp.imagPart = this->rePart * other.imagPart+this->imagPart * other.rePart;
         return temp;
     }
 
     complex operator /(const complex& other)//перегрузка /
     {
         complex temp;
-        temp.rePart = this->rePart / other.rePart;
-        temp.imagPart = this->imagPart / other.imagPart;
+        temp.rePart = (this->rePart * other.rePart + this->imagPart * other.imagPart)/(other.rePart * other.rePart + other.imagPart * other.imagPart);
+        temp.imagPart = (other.rePart*this->imagPart - this->rePart * other.imagPart)/(other.rePart * other.rePart + other.imagPart * other.imagPart);
         return temp;
     }
 
-    bool operator == (const complex & other)//перегрузка ==
+    bool operator == (const complex& other)//перегрузка ==
     {
         return this->rePart == other.rePart && this->imagPart == other.imagPart;
     }
 
 
-    void print()//вывод комплексного числа
+    void print()const//вывод комплексного числа
     {
         cout << rePart << " + " << imagPart << 'i' << endl;
     }
@@ -62,7 +63,7 @@ public:
     }
 
 
-    void sopr(double rePart, double imagPart)//создание сопряженног числа
+    void sopr(double rePart, double imagPart)//создание сопряженного числа
     {
         this->rePart = rePart;
         this->imagPart = -imagPart;
