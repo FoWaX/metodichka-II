@@ -1,0 +1,91 @@
+#include <iostream>
+using namespace std;
+
+class queue
+{
+    struct element
+    {
+        
+        int inf;//информационное поле, хранящее значения
+        element* next;//указатель на следующий элемент очереди
+        element (int x):inf(x),next(0)//конструктор для элемента стека
+        {}
+    };
+    element* head,*tail;//указатель на вершину и хвост очереди
+public:
+    queue():head(0),tail(0){}//конструктор очереди
+    bool empty()//проверяем, пуста ли очередь или нет
+    {
+        return head == 0;
+    }
+    int get()//взятие элемента из очереди
+    {
+        if (empty())//если очередь пустой то ничего не делаем
+        {
+            return 0;
+        }
+        //в другом случае извлекаем элемент из головы очереди
+        element* t = head;
+        int x = t->inf;
+        head = t->next;
+        if (head == 0)
+        {
+            tail = 0;
+        }
+        delete t;
+        return x;
+    }
+    void put(int data)//добавление элемента в очередь
+    {
+        //устанавливаем вспомогательный указатель на последний элемент очереди
+        element* t = tail;
+        //формируется новый элемент на который будет указывать tail
+        tail = new element(data);
+        // в случае если очередь была пуста то новый элемент это и первый и последний, 
+        //поэтому указатель head устанавливаем на этот элемент
+        if (!head)
+        {
+            head = tail;
+        }
+        else
+        {
+            t->next = tail;//иначе новый узел помещаем в конец очереди
+        }
+    }
+};
+
+int main()
+{
+    queue t,t1,t2;
+    int f;
+    for (int i = 0; i < 10; i++)
+    {
+        int x;
+        cin >> x;
+        t.put(x);
+    }
+    
+    while (!t.empty())
+    {
+        f = t.get();
+        if (f % 2 == 0)
+        {
+            t1.put(f);
+        }
+        else
+        {
+            t2.put(f);
+        }
+    }
+    while (!t2.empty())
+    {
+        f = t2.get();
+        t1.put(f);
+    }
+    while (!t1.empty())
+    {
+        f = t1.get();
+        cout << f << ' ';
+    }
+    return 0;
+}
