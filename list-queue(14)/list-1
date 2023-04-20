@@ -1,0 +1,150 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+class list
+{
+    struct element
+    {
+
+        int inf;//информационное поле, хранящее значения
+        element* next;//указатель на следующий элемент очереди
+        element(int x) :inf(x), next(0)//конструктор для элемента стека
+        {}
+    };
+    element* head;//указатель на начало списка
+    int size;//кол-во элементов списка
+    //возвращает указатель на элемент списка с номером index
+    element* find(int index)
+    {
+        if ((index < 1) || (index > size))//проверка входит ли индекс элемента в диапазон, если нет - возвращает 0
+        {
+            return 0;
+        }
+        else
+        {
+            //устанавливаем указатель на начало списка
+            element* cur = head;
+            for (int i = 01; i < index; i++)//перемещаемся по списку на элемент с номером index
+            {
+                cur = cur->next;
+            }
+            return cur; //возвращает указатель на выбранный элемент
+        }
+    }
+public:
+    list() :head(0), size(0) {}//конструктор списка
+    ~list()//деструктор списка
+    {
+        while (!empty())
+        {
+            remove(1);//удалаем первый элемент списка пока он не пуст
+        }
+    }
+    bool empty()//проверяем, пуст ли список или нет
+    {
+        return head == 0;
+    }
+    int getLength()
+    {
+        return size;//возвращение кол-ва элементов списка
+    }
+    int get(int index)//возвращает значение элемента списка по его номеру
+    {
+        if ((index < 1) || (index > size))
+        {
+            return 0;
+        }
+        element* r = find(index);
+        int x = r->inf;
+        return x;
+    }
+    void insert(int index,int data)//добавление элемента со значением data в позицию index
+    {
+        if ((index < 1) || (index > size + 1))
+        {
+            cout << "Error" << endl;
+        }
+        else
+        {
+            element* newptr = new element(data);
+            size = getLength() + 1;//увеличение размерности списка
+            if (index == 1)//если элемент вставляем в начало списка
+            {
+                newptr->next = head;
+                head = newptr;
+            }
+            else//иной случай
+            {
+                element* prev = find(index - 1);
+                newptr->next = prev->next;
+                prev->next = newptr;
+            }
+        }
+    }
+    void remove(int index)//удаление элемента из списка с номером index
+    {
+        if ((index < 1) || (index > size))
+        {
+            cout << "Error" << endl;
+        }
+        else
+        {
+            element* cur;//объявление вспомогательного указателя
+            --size;
+            if (index == 1)
+            {
+                cur = head;
+                head = head->next;
+            }
+            else//
+            {
+                element* prev = find(index - 1);
+                cur = prev->next;
+                prev->next = cur->next;
+            }
+            cur->next = 0;
+            delete cur;
+        }
+    }
+};
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+int main()
+{
+    list t, t1, t2;
+    int f, x, i;
+    while(in >> x) // пока файл не пуст считываем из него элемент и помещаем в него список.
+    {
+        t.insert(t.getLength() + 1, x);
+    }
+    for (int i = 1; i <= t.getLength(); i++)
+    {
+        if (t.get(i) % 2 == 0)
+        {
+            t1.insert(t1.getLength() + 1, t.get(i));//добавление элемента, подходящего под условия в новый список.
+            //Позиция на которую добавляем элемент списка будет на одну больше чем количество элемнтов в списке
+        }
+    }
+
+    for (int i = 1; i <= t.getLength(); i++)
+    {
+        if (t.get(i) % 2 != 0)
+        {
+            t1.insert(t1.getLength() + 1, t.get(i));//добавление элемента, подходящего под условия в новый список.
+            //Позиция на которую добавляем элемент списка будет на одну больше чем количество элемнтов в списке
+        }
+    }
+
+    for (int i = 1; i <= t1.getLength(); i++)
+    {
+        out << t1.get(i) << ' ';
+    }
+
+    return 0;
+
+    in.close();
+    out.close();
+}
