@@ -1,0 +1,205 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+class list
+{
+    struct element
+    {
+
+        int inf;//информационное поле, хранящее значения
+        element* next,*prev;//указатель на следующий и предыдущий элемент списка
+        element(int x) :inf(x), next(0),prev(0)//конструктор для элемента стека
+        {}
+    };
+    element* head,*tail;
+    int size;//кол-во элементов списка
+    //возвращает указатель на элемент списка с номером index
+    element* find(int index)
+    {
+        if ((index < 1) || (index > size))//проверка входит ли индекс элемента в диапазон, если нет - возвращает 0
+        {
+            return 0;
+        }
+        else
+        {
+            //устанавливаем указатель на начало списка
+            element* cur = head;
+            for (int i = 1; i < index; i++)//перемещаемся по списку на элемент с номером index
+            {
+                cur = cur->next;
+            }
+            return cur; //возвращает указатель на выбранный элемент
+        }
+    }
+public:
+    list() :head(0), size(0),tail(0) {}//конструктор списка
+    ~list()//деструктор списка
+    {
+        while (!empty())
+        {
+            remove(1);//удалаем первый элемент списка пока он не пуст
+        }
+    }
+    bool empty()//проверяем, пуст ли список или нет
+    {
+        return head == 0;
+    }
+    int getLength()
+    {
+        return size;//возвращение кол-ва элементов списка
+    }
+    int get(int index)//возвращает значение элемента списка по его номеру
+    {
+        if ((index < 1) || (index > size))
+        {
+            return 0;
+        }
+        element* r = find(index);
+        int x = r->inf;
+        return x;
+    }
+    void insertleft(int index,int data)//добавление элемента со значением data слева от элемента с позицией index
+    {
+        if ((index < 1) || (index > size + 1))
+        {
+            cout << "Error" << endl;
+        }
+        else
+        {
+            element* newptr = new element(data);
+            size = getLength() + 1;//увеличение размерности списка
+            //устанавливаем указатель на элемент списка
+            element* cur = find(index);
+            //если указатель равен нулю, то список пустой, поэтому новый элемент и первый и последний
+            if (cur == 0)
+            {
+                head = newptr;
+                tail = newptr;
+            }
+            else//вставка в ином случае, которую также можно разбить на два подслучая
+            {
+                newptr->next = cur;
+                newptr->prev = cur->prev;
+                cur->prev = newptr;
+                if (cur == head)
+                {
+                    head = newptr;//вставка перед первым элемнтом списка
+                }
+                else
+                {
+                    newptr->prev->next = newptr;//общий случай
+                }
+            }
+        }
+    }
+    void insertright(int index, int data)//добавление элемента со значением data слева от элемента с позицией index
+    {
+        if ((index < 1 && head != 0) || (index > size + 1))
+        {
+            cout << "Error" << endl;
+        }
+        else
+        {
+            element* newptr = new element(data);
+            size = getLength() + 1;//увеличение размерности списка
+            //устанавливаем указатель на элемент списка
+            element* cur = find(index);
+            //если указатель равен нулю, то список пустой, поэтому новый элемент и первый и последний
+            if (cur == 0)
+            {
+                head = newptr;
+                tail = newptr;
+            }
+            else//вставка в ином случае, которую также можно разбить на два подслучая
+            {
+                newptr->next = cur->next;
+                newptr->prev = cur;
+                cur->next = newptr;
+                if (cur == tail)
+                {
+                    tail = newptr;//вставка после последнего элемента списка
+                }
+                else
+                {
+                    newptr->next->prev = newptr;//общий случай
+                }
+            }
+        }
+    }
+    void remove(int index)//удаление элемента из списка с номером index
+    {
+        if ((index < 1) || (index > size))
+        {
+            cout << "Error" << endl;
+        }
+        else
+        {
+            element* cur = find(index);//устанавливаем указатель на заданный элемент
+            --size;
+            if (size == 0)//если после удаления элемента список становится пустым
+            {
+                head = 0;
+                tail = 0;
+            }
+            else if (cur == head)//удаление первого элемента
+            {
+                head = head->next;
+                head->prev = 0;
+            }
+            else if (cur == tail)//удаление последнего элемента
+            {
+                tail = tail->prev;
+                tail->next = 0;
+            }
+            else//общий случай
+            {
+                cur->prev->next = cur->next;
+                cur->next->prev = cur->prev;
+            }
+            
+            cur->next = 0;
+            cur->prev = 0;
+            delete cur;
+        }
+    }
+};
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+int main()
+{
+    list t, t1, t2;
+    int f, x, i;
+    while(in >> x) // пока файл не пуст считываем из него элемент и помещаем в него список.
+    {
+        t.insertright(t.getLength(), x);
+    }
+    for (int i = 1; i <= t.getLength(); i++)
+    {
+        if (t.get(i) % 2 == 0)
+        {
+            t1.insertright(t1.getLength(), t.get(i));//добавление элемента, подходящего под условия в новый список
+        }
+    }
+
+    for (int i = 1; i <= t.getLength(); i++)
+    {
+        if (t.get(i) % 2 != 0)
+        {
+            t1.insertright(t1.getLength(), t.get(i));//добавление элемента, подходящего под условия в новый список.
+            //Позиция на которую добавляем элемент списка будет на одну больше чем количество элемнтов в списке
+        }
+    }
+
+    for (int i = 1; i <= t1.getLength(); i++)
+    {
+        out << t1.get(i) << ' ';
+    }
+
+    return 0;
+
+    in.close();
+    out.close();
+}
