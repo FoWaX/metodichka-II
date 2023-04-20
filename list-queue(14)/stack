@@ -1,0 +1,88 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+class stack
+{
+    struct element
+    {
+        int inf;//информационное поле, хранящее значения
+        element* next;//указатель на следующий элемент стека
+        element(int x, element* p) :inf(x), next(p)//конструктор для элемента стека
+        {}
+    };
+    element* head;//указатель на вершину стека
+public:
+    stack() :head(0) {}//конструктор стека
+    bool empty()//проверяем, пуст ли стек или нет
+    {
+        return head == 0;
+    }
+    int pop()//взятие элемента из стека
+    {
+        if (empty())//если стпек пустой то ничего не делаем
+        {
+            return 0;
+        }
+        //в другом случае надо запомнить указатель на вершину стека
+        element* r = head;
+        //запоминаем информацию из верхнего элемента
+        int x = r->inf;
+        //передвигаем указатель стека на следующий от вершины элемент
+        head = r->next;
+        delete r;//освобождение памяти на которую указывает стек
+        return x;//возвращаем значение
+    }
+    void push(int data)//добавление элемента в стек
+    {
+        head = new element(data, head);
+    }
+    int top()//просмотр элемена на вершине стека
+    {
+        if (empty())//если стек пустой то возвращаем ноль
+        {
+            return 0;
+        }
+        else //иначе возвращаем информацию из вершины стека
+        {
+            return head->inf;
+        }
+    }
+};
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+int main()
+{
+    stack t, t1, t2;
+    int f, x;
+    while (in >> x)
+    {
+        t.push(x);
+    }
+
+    while (!t.empty())
+    {
+        f = t.pop();
+        if (f % 2 == 0)
+        {
+            t1.push(f);
+        }
+        else
+        {
+            t2.push(f);
+        }
+    }
+    while (!t1.empty())
+    {
+        f = t1.pop();
+        t2.push(f);
+    }
+    while (!t2.empty())
+    {
+        f = t2.pop();
+        out << f << ' ';
+    }
+    return 0;
+}
