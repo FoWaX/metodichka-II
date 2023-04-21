@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int f(int n,int s)
+{
+    if (n != 0)
+    {
+        int x = n % 10;
+        s += x;
+        n /= 10;
+        return f(n, s);
+    }
+
+    return s;
+}
+
+int main()
+{
+    int a, b, s;
+    cin >> a >> b;
+    for (int i = a; i <= b; i++)
+    {
+        s = 0;
+        if (f(i, s) % 2 != 0)
+        {
+            cout << i << ' ';
+        }
+    }
+    return 0;
+}
