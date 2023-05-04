@@ -1,0 +1,28 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include<fstream>
+using namespace std;
+
+ifstream in("input.txt");
+
+int main()
+{
+	map <string, string> mp;
+	string s, a, b;
+	a = "chislo";
+	b = "slovo";
+	while (in.peek()!=EOF)
+	{
+		in >> s;
+		if (isdigit(s[0]))
+		{
+			mp[] = s;
+		}
+		else
+		{
+			mp["slovo"] = s;
+		}
+	}
+	cout << mp.count("chislo");
+}
