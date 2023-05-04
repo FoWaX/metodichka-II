@@ -1,0 +1,86 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+struct chel {
+    string fam, imya, otch;
+    int god, z1, z2, z3, z4, z5, grupp, summz;
+};
+
+int partition(chel a[], int start, int end)
+{
+    // Выбираем крайний правый элемент в качестве опорного элемента массива
+    int pivot = a[end].summz;
+
+    // элементы, меньшие точки поворота, будут перемещены влево от `pIndex`
+    // элементы больше, чем точка поворота, будут сдвинуты вправо от `pIndex`
+    // равные элементы могут идти в любом направлении
+    int pIndex = start;
+
+    // каждый раз, когда мы находим элемент, меньший или равный опорному, `pIndex`
+    // увеличивается, и этот элемент будет помещен перед опорной точкой.
+    for (int i = start; i < end; i++)
+    {
+        if (a[i].summz <= pivot)
+        {
+            swap(a[i], a[pIndex]);
+            pIndex++;
+        }
+    }
+
+    // поменять местами `pIndex` с пивотом
+    swap(a[pIndex], a[end]);
+
+    // вернуть `pIndex` (индекс опорного элемента)
+    return pIndex;
+}
+
+// Процедура быстрой сортировки
+void quicksort(chel a[], int start, int end)
+{
+    // базовое условие
+    if (start >= end) {
+        return;
+    }
+
+    // переставить элементы по оси
+    int pivot = partition(a, start, end);
+
+    // повторяем подмассив, содержащий элементы, меньшие опорной точки
+    quicksort(a, start, pivot - 1);
+
+    // повторяем подмассив, содержащий элементы, превышающие точку опоры
+    quicksort(a, pivot + 1, end);
+}
+
+int main()
+{
+    chel* x = new chel[6];
+    int i = 0;
+    while (in.peek() != EOF)
+    {
+        in >> x[i].grupp >> x[i].fam >> x[i].imya >> x[i].otch >> x[i].god
+            >> x[i].z1 >> x[i].z2 >> x[i].z3 >> x[i].z4 >> x[i].z5;
+        i++;
+    }
+    for (int g = 0; g < i; g++)
+    {
+        x[g].summz = x[g].z1 + x[g].z2 + x[g].z3 + x[g].z4 + x[g].z5;
+    }
+
+    quicksort(x, 0, i - 1);
+
+    for (int g = 0; g < i; g++)
+    {
+        out << x[g].grupp << ' ' << x[g].fam << ' ' << x[g].imya << ' ' << x[g].otch << ' ' << x[g].god
+            << ' ' << x[g].z1 << ' ' << x[g].z2 << ' ' << x[g].z3 << ' ' << x[g].z4 << ' ' << x[g].z5 << ' ' << x[g].summz << endl;
+    }
+
+    in.close();
+    out.close();
+}
+
