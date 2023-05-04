@@ -1,0 +1,42 @@
+#include <iostream>
+#include <set>
+using namespace std;
+
+int main()
+{
+	int n;
+	cin >> n;
+	set <int> st, st1;
+	for (int i = 0; i < n; i++)
+	{
+		int x;
+		cin >> x;
+		st.insert(x);
+	}
+	set <int> ::iterator it = st.begin();
+	for (; it!=st.end(); it++)
+	{
+		int a, z;
+		int n = 0;
+		z = *it;
+		a = z;
+		while (a != 0)
+		{
+			a /= 10;
+			n++;
+		}
+		if (n == 2)
+		{
+			st1.insert(z % 10);
+			st1.insert(z / 10);
+		}
+	}
+	for (int i = 0; i <= 9; i++)
+	{
+		if (st1.find(i) == st1.end())
+		{
+			cout << i << ' ';
+		}
+	}
+  return 0;
+}
