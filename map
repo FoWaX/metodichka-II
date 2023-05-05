@@ -8,21 +8,35 @@ ifstream in("input.txt");
 
 int main()
 {
-	map <string, string> mp;
-	string s, a, b;
-	a = "chislo";
-	b = "slovo";
-	while (in.peek()!=EOF)
+	map <string, int> mp;
+	string s;
+	int i = 1;
+	while (in.peek() != EOF)
 	{
+		int i = 1;
 		in >> s;
 		if (isdigit(s[0]))
 		{
-			mp[] = s;
+			if (mp.find(s) != mp.end())
+			{
+				mp[s] = mp[s] + 1;
+			}
+			mp[s] = i;
 		}
 		else
 		{
-			mp["slovo"] = s;
+			mp[s] = i;
 		}
 	}
-	cout << mp.count("chislo");
+	map <string, int> ::iterator it = mp.begin();
+	string s1;
+	for (; it != mp.end(); it++)
+	{
+		s1 = it->first;
+		if (isdigit(s1[0]))
+		{
+			cout << it->first << ' ' << it->second << endl;
+		}
+	}
+	in.close();
 }
