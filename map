@@ -11,17 +11,19 @@ int main()
 	map <string, int> mp;
 	string s;
 	int i = 1;
-	while (in.peek() != EOF)
+	while (in >> s)
 	{
 		int i = 1;
-		in >> s;
 		if (isdigit(s[0]))
 		{
-			if (mp.find(s) != mp.end())
+			if (mp.find(s) != mp.end() && s[0] != ' ')
 			{
 				mp[s] = mp[s] + 1;
 			}
-			mp[s] = i;
+			else
+			{
+				mp[s] = i;
+			}
 		}
 		else
 		{
