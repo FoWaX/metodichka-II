@@ -12,12 +12,7 @@ struct chel {
     string fam, imya, otch;
     int god, z1, z2, z3, z4, z5, grupp;
 };
-bool comp(vector <chel> a, vector <chel> b)
-{
 
-    return  a.fam < b.fam;
-
-}
 int main()
 {
     vector <chel> pep;
@@ -30,7 +25,10 @@ int main()
         pep.push_back(x);
         i++;
     }
-    sort(pep.begin(), pep.end(), comp);
+    stable_sort(pep.begin(), pep.end(), [](const chel& a, const chel& b)
+        {
+            return a.fam < b.fam;
+        });
     for (int k = 0; k < i; k++)
     {
         out << pep[k].grupp << ' ' << pep[k].fam << ' ' << pep[k].imya << ' ' << pep[k].otch << ' ' << pep[k].god
