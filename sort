@@ -1,0 +1,41 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+ifstream in("input.txt");
+ofstream out("output.txt");
+
+struct chel {
+    string fam, imya, otch;
+    int god, z1, z2, z3, z4, z5, grupp;
+};
+bool comp(vector <chel> a, vector <chel> b)
+{
+
+    return  a.fam < b.fam;
+
+}
+int main()
+{
+    vector <chel> pep;
+    int i = 0;
+    chel x;
+    while (in.peek() != EOF)
+    {
+        in >> x.grupp >> x.fam >> x.imya >> x.otch >> x.god
+            >> x.z1 >> x.z2 >> x.z3 >> x.z4 >> x.z5;
+        pep.push_back(x);
+        i++;
+    }
+    sort(pep.begin(), pep.end(), comp);
+    for (int k = 0; k < i; k++)
+    {
+        out << pep[k].grupp << ' ' << pep[k].fam << ' ' << pep[k].imya << ' ' << pep[k].otch << ' ' << pep[k].god
+            << ' ' << pep[k].z1 << ' ' << pep[k].z2 << ' ' << pep[k].z3 << ' ' << pep[k].z4 << ' ' << pep[k].z5 << endl;
+    }
+    in.close();
+    out.close();
+}
