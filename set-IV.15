@@ -14,7 +14,8 @@ int main()
     string stroka;
     vector <int> cur_num,prev_num;
     bool first_stroka = true;
-
+    multiset<int> prev_set;
+    multiset<int> cur_set;
     
     while (getline(in, stroka))
     {
@@ -24,14 +25,13 @@ int main()
         {
             num = stoi(stroka.substr(pos, found - pos));
             pos = found + 1;
-            cur_num.push_back(num);
+            cur_set.insert(num);
         }
         num = stoi(stroka.substr(pos));
-        cur_num.push_back(num);
+        cur_set.insert(num);
+        
         if (!first_stroka)
         {
-            multiset<int> prev_set(prev_num.begin(), prev_num.end());
-            multiset<int> cur_set(cur_num.begin(), cur_num.end());
             set<int> inter;
 
             for (int num:prev_set)
@@ -50,8 +50,8 @@ int main()
         {
             first_stroka = false;
         }
-        prev_num = cur_num;
-        cur_num.clear();
+        prev_set = cur_set;
+        cur_set.clear();
     }
     in.close();
     return 0;
