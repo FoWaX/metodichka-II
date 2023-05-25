@@ -1,32 +1,22 @@
 #include <iostream>
-#include <string>
-#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
 using namespace std;
 
-ifstream in("input.txt");
-ofstream out("output.txt");
-
-struct chel {
-    string fam, imya, otch;
-    int god, z1, z2, z3, z4, z5, grupp, summz;
-};
-
-// Процедура для преобразования в двоичную кучу поддерева с корневым узлом i, что является
-// индексом в arr[]. n - размер кучи
-
-void heapify(chel arr[], int n, int i)
+void heapify(vector <int>& arr, int n, int i)
 {
     int largest = i;
     // Инициализируем наибольший элемент как корень
     int l = 2 * i + 1; // левый = 2*i + 1
     int r = 2 * i + 2; // правый = 2*i + 2
 
-    // Если левый дочерний элемент больше корня
-    if (l < n && arr[l].summz > arr[largest].summz)
+    // Если левый дочерний элемент меньше корня
+    if (l < n && arr[l] < arr[largest])
         largest = l;
 
-    // Если правый дочерний элемент больше, чем самый большой элемент на данный момент
-    if (r < n && arr[r].summz > arr[largest].summz)
+    // Если правый дочерний элемент меньше, чем самый большой элемент на данный момент
+    if (r < n && arr[r] < arr[largest])
         largest = r;
 
     // Если самый большой элемент не корень
@@ -40,7 +30,7 @@ void heapify(chel arr[], int n, int i)
 }
 
 // Основная функция, выполняющая пирамидальную сортировку
-void heapSort(chel arr[], int n)
+void heapSort(vector <int>& arr, int n)
 {
     // Построение кучи (перегруппируем массив)
     for (int i = n / 2 - 1; i >= 0; i--)
@@ -57,30 +47,42 @@ void heapSort(chel arr[], int n)
     }
 }
 
+
 int main()
 {
-    chel* x = new chel[6];
-    int i = 0;
-    while (in.peek() != EOF)
-    {
-        in >> x[i].grupp >> x[i].fam >> x[i].imya >> x[i].otch >> x[i].god
-            >> x[i].z1 >> x[i].z2 >> x[i].z3 >> x[i].z4 >> x[i].z5;
-        i++;
-    }
-    for (int g = 0; g < i; g++)
-    {
-        x[g].summz = x[g].z1 + x[g].z2 + x[g].z3 + x[g].z4 + x[g].z5;
-    }
+    int n = 5;
+    vector<vector<int>> matrix = { {-3, -2, -1, 0, 1},
+                                  {-2, -1, 0, 1, 2},
+                                  {-1, 0, 2, 1, 3},
+                                  {1, 0, 2, 4, 3},
+                                  {4, 1, 2, 5, 3} };
 
-    heapSort(x, i);
-
-    for (int g = 0; g < i; g++)
-    {
-        out << x[g].grupp << ' ' << x[g].fam << ' ' << x[g].imya << ' ' << x[g].otch << ' ' << x[g].god
-            << ' ' << x[g].z1 << ' ' << x[g].z2 << ' ' << x[g].z3 << ' ' << x[g].z4 << ' ' << x[g].z5 << ' ' << x[g].summz << endl;
+    for (int i = 0; i < n; i++) {
+        vector<int> diagonal;
+        for (int j = 0; j < n - i; j++) {
+            diagonal.push_back(matrix[j][i + j]);
+        }
+        heapSort(diagonal, diagonal.size());
+        for (int j = 0; j < n - i; j++) {
+            matrix[j][i + j] = diagonal[j];
+        }
     }
 
-    in.close();
-    out.close();
+    for (int i = 1; i < n; i++) {
+        vector<int> diagonal;
+        for (int j = 0; j < n - i; j++) {
+            diagonal.push_back(matrix[i + j][j]);
+        }
+        heapSort(diagonal, diagonal.size());
+        for (int j = 0; j < n - i; j++) {
+            matrix[i + j][j] = diagonal[j];
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+	return 0;
 }
-
