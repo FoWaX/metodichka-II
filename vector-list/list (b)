@@ -1,0 +1,30 @@
+#include <iostream>
+#include <list>
+using namespace std;
+
+bool is_prost(int n)
+{
+	if (n <= 1) return false;
+	for (int i = 2; i * i <= n; i++)
+	{
+		if (n % i == 0) return false;
+	}
+	return true;
+}
+
+int main()
+{
+	list<int> lst = { 7, 13, 5, 5 };
+	if (is_prost(lst.front())) lst.pop_front();
+
+	if (is_prost(lst.back())) lst.pop_back();
+
+	for (int i : lst)
+	{
+		cout << i << ' ';
+	}
+	return 0;
+}
+
+Теоретическая временная сложность: O(sqrt(n)) для проверки простоты числа. 
+Выбор списка обоснован тем, что нам нужно эффективно удалить первый и последний элементы, что делается за O(1) в списке.
