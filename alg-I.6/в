@@ -1,0 +1,20 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+
+int main()
+{
+	vector <pair<int, int>> xy = { {2,0},{0,1},{1,0},{5,1},{2,6},{4,0} };
+	auto a = [](pair<int, int>& p)
+	{
+		return p.first > p.second;
+	};
+	auto r = find_if(xy.rbegin(), xy.rend(), a);
+	auto r1 = *r;
+	if (r != xy.rend()) cout << r1.first << ' ' << r1.second << endl;
+	else cout << "Nope";
+	return 0;
+}
