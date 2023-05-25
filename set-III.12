@@ -57,17 +57,18 @@ int main() {
     set<string> result;
     set <string> ::iterator it = narr_words.begin();
     string w;
-    for (;it!= narr_words.end();it++) {
+    for (; it != narr_words.end();) {
         w = *it;
-        if (excl_words.count(w) == 0) {
-            result.insert(w);
+        if (excl_words.count(w) > 0) {
+            it = narr_words.erase(it);
         }
+        else it++;
     }
-    set <string> ::iterator it1 = result.begin();
-    for (; it1 != result.end(); it1++) {
+    set <string> ::iterator it1 = narr_words.begin();
+    for (; it1 != narr_words.end(); it1++) {
         cout << *it1 << endl;
     }
-    cout << result.size() << endl;
+    cout << narr_words.size() << endl;
     in.close();
     return 0;
 }
