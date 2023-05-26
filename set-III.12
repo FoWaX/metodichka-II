@@ -9,16 +9,20 @@ int main() {
     set<string> narr_words;
     set<string> excl_words;
     ifstream in("input.txt");
-    string line;
+    string line,line1;
     char punct[] = ".?!";
     while (getline(in, line)) {
+        for (int i = 0; i < line.size(); i++)
+        {
+            line1 += tolower(line[i]);
+        }
         int pos = 0;
         while (true) {
-            int end_pos = line.find_first_of(punct, pos);
+            int end_pos = line1.find_first_of(punct, pos);
             if (end_pos == string::npos) {
-                end_pos = line.length();
+                end_pos = line1.length();
             }
-            string sentence = line.substr(pos, end_pos - pos + 1);
+            string sentence = line1.substr(pos, end_pos - pos + 1);
             if (sentence.length() > 1) {
                 string word;
                 int word_start = -1;
@@ -48,7 +52,7 @@ int main() {
                     }
                 }
             }
-            if (end_pos == line.length()) {
+            if (end_pos == line1.length()) {
                 break;
             }
             pos = end_pos + 1;
