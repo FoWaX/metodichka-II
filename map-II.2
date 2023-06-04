@@ -1,0 +1,215 @@
+#include <iostream>
+#include <map>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Author {
+    struct Work {
+        string title;
+        string genre;
+    };
+
+    string name;
+    int birthYear;
+    int deathYear;
+    vector<Work> works;
+public:
+    Author(const string& name, int birthYear, int deathYear)
+        : name(name), birthYear(birthYear), deathYear(deathYear) {}
+    
+    Author()
+        : name(" "), birthYear(0), deathYear(0) {}
+    string getName() const {
+        return name;
+    }
+
+    int getBirthYear() const {
+        return birthYear;
+    }
+
+    int getDeathYear() const {
+        return deathYear;
+    }
+
+    void setBirthYear(int newBirthYear) {
+        birthYear = newBirthYear;
+    }
+
+    void setDeathYear(int newDeathYear) {
+        deathYear = newDeathYear;
+    }
+
+    void addWork(const string& title, const string& genre) {
+        works.push_back({ title, genre });
+    }
+
+    void removeWork(const string& title) {
+        works.erase(std::remove_if(works.begin(), works.end(),
+            [&](const Work& work) { return work.title == title; }),
+            works.end());
+    }
+
+    void updateWork(const string& oldTitle, const string& newTitle, const string& newGenre) {
+        auto it = find_if(works.begin(), works.end(),
+            [&](const Work& work) { return work.title == oldTitle; });
+        if (it != works.end()) {
+            it->title = newTitle;
+            it->genre = newGenre;
+        }
+    }
+
+    vector<string> getWorksByAuthor() const {
+        vector<string> titles;
+        for (const auto& work : works) {
+            titles.push_back(work.title);
+        }
+        return titles;
+    }
+
+    bool hasWorkInGenre(const string& genre) const {
+        return any_of(works.begin(), works.end(),
+            [&](const Work& work) { return work.genre == genre; });
+    }
+
+};
+
+class Library {
+    map<string, Author> authors;
+public:
+    void addAuthor(const string& name, int birthYear, int deathYear) {
+        authors[name] = Author(name, birthYear, deathYear);
+    }
+
+    void removeAuthor(const string& name) {
+        authors.erase(name);
+    }
+
+    void updateAuthorBirthYear(const string& authorName, int newBirthYear) {
+        if (authors.find(authorName) != authors.end()) {
+            authors[authorName].setBirthYear(newBirthYear);
+        }
+    }
+
+    void updateAuthorDeathYear(const string& authorName, int newDeathYear) {
+        if (authors.find(authorName) != authors.end()) {
+            authors[authorName].setDeathYear(newDeathYear);
+        }
+    }
+
+    void printLibraryInfo() const {
+        for (const auto& authorPair : authors) {
+            const Author& author = authorPair.second;
+            cout << "author " << author.getName() << " (" << author.getBirthYear() << "-" << author.getDeathYear() << ")\n";
+            cout << "proisvedenia \n";
+            for (const auto& work : author.getWorksByAuthor()) {
+                cout << "  - " << work << "\n";
+            }
+            cout << std::endl;
+        }
+    }
+    void addWork(const string& authorName, const string& title, const string& genre) {
+        if (authors.find(authorName) != authors.end()) {
+            authors[authorName].addWork(title, genre);
+        }
+    }
+
+    void removeWork(const string& authorName, const string& title) {
+        if (authors.find(authorName) != authors.end()) {
+            authors[authorName].removeWork(title);
+        }
+    }
+
+    void updateWork(const string& authorName, const string& oldTitle, const string& newTitle, const string& newGenre) {
+        if (authors.find(authorName) != authors.end()) {
+            authors[authorName].updateWork(oldTitle, newTitle, newGenre);
+        }
+    }
+
+    int getBirthYearByAuthor(const string& authorName) const {
+        if (authors.find(authorName) != authors.end()) {
+            return authors.at(authorName).getBirthYear();
+        }
+        return {};
+    }
+
+    int getDeathYearByAuthor(const string& authorName) const {
+        if (authors.find(authorName) != authors.end()) {
+            return authors.at(authorName).getDeathYear();
+        }
+        return {};
+    }
+
+    vector<string> getWorksByAuthor(const string& authorName) const {
+        if (authors.find(authorName) != authors.end()) {
+            return authors.at(authorName).getWorksByAuthor();
+        }
+        return {};
+    }
+
+    void removeAuthorsWithoutGenre(const string& genre) {
+        for (auto it = authors.begin(); it != authors.end();) {
+            if (!it->second.hasWorkInGenre(genre)) {
+                it = authors.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+    }
+};
+
+int main()
+{
+    Library library;
+
+    library.addAuthor("Lev tolstoy", 1828, 1910);
+    library.addAuthor("Fedor Dostoevsky", 1821, 1881);
+
+    library.addWork("Lev tolstoy", "Voyna and mir", "roman");
+    library.addWork("Lev tolstoy", "Anna korenina", "roman");
+    library.addWork("Fedor Dostoevsky", "Prestyplenie and nakasanie", "roman");
+    library.addWork("Fedor Dostoevsky", "Bratya karamsini", "poesia");
+
+    vector<string> tolstoyWorks = library.getWorksByAuthor("Lev tolstoy");
+    for (const auto& work : tolstoyWorks) {
+        cout << work << endl;
+    }
+
+    cout << endl;
+
+    vector<string> dostoevsky = library.getWorksByAuthor("Fedor Dostoevsky");
+    for (const auto& work : dostoevsky) {
+        cout << work << endl;
+    }
+
+    cout << endl;
+
+    library.printLibraryInfo();
+
+    library.removeAuthorsWithoutGenre("poesia");
+    cout << "posle udalenia avtorov bes ganra poesia" << endl;
+
+    vector<string> tolstoyWorks1 = library.getWorksByAuthor("Lev tolstoy");
+    for (const auto& work : tolstoyWorks1) {
+        cout << work << endl << endl;;
+    }
+
+    cout << endl;
+
+    vector<string> dostoevsky1 = library.getWorksByAuthor("Fedor Dostoevsky");
+    for (const auto& work : dostoevsky1) {
+        cout << work << endl << endl;
+    }
+
+    cout << endl;
+
+    library.printLibraryInfo();
+
+    cout << " utochnenie godov shisny autora" << endl;
+
+    cout << " dostoevsky   " << library.getBirthYearByAuthor("Fedor Dostoevsky") << " - " << library.getDeathYearByAuthor("Fedor Dostoevsky");
+
+    return 0;
+}
