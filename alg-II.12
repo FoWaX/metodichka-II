@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Sound {
+    int pitch_;
+    double duration_;
+public:
+    Sound(int pitch, double duration) : pitch_(pitch), duration_(duration) {}
+    Sound() : pitch_(0), duration_(0) {}
+
+    int get_pitch() const {
+        return pitch_;
+    }
+
+    double get_duration() const {
+        return duration_;
+    }
+};
+
+int main() {
+    // Создаем мелодию
+    vector<Sound> melody = {
+        {60, 0.5}, {62, 0.5}, {64, 0.5}, {65, 0.5},
+        {67, 0.5}, {69, 0.5}, {71, 0.5}, {72, 0.5}
+    };
+
+    //вывод до удаления
+    for (const auto& sound : melody) {
+        cout << "Pitch: " << sound.get_pitch() << ", Duration: " << sound.get_duration() << endl;
+    }
+    cout << endl;
+    // Задаем высоту ноты, которую хотим удалить
+    int del_pitch = 64;
+
+    // Удаляем ноты с заданной высотой
+    melody.erase(remove_if(melody.begin(), melody.end(),
+        [del_pitch](const Sound& sound) {
+            return sound.get_pitch() == del_pitch;
+        }),
+        melody.end());
+
+    // Выводим новую мелодию
+    for (const auto& sound : melody) {
+        cout << "Pitch: " << sound.get_pitch() << ", Duration: " << sound.get_duration() << endl;
+    }
+
+    return 0;
+}
