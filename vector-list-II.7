@@ -1,19 +1,24 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <ctime>
 #include <algorithm>
+using namespace std;
 
 class User {
+    string name_;
+    int registration_time_;
+    bool is_admin_;
+    bool is_banned_;
+    bool is_veteran_ = false;
 public:
-    User(const std::string& name, time_t registration_time, bool is_admin = false)
+    User(const string& name, int registration_time, bool is_admin = false)
         : name_(name), registration_time_(registration_time), is_admin_(is_admin), is_banned_(false) {}
 
-    bool is_inactive_for_more_than_one_year(time_t current_time) const {
+    bool is_inactive_for_more_than_one_year(int current_time) const {
         return current_time - registration_time_ > 365 * 24 * 60 * 60;
     }
 
-    bool is_registered_for_more_than_five_years(time_t current_time) const {
+    bool is_registered_for_more_than_five_years(int current_time) const {
         return current_time - registration_time_ > 5 * 365 * 24 * 60 * 60;
     }
 
@@ -34,33 +39,27 @@ public:
     }
 
     void print_info() const {
-        std::cout << "User: " << name_ << ", Admin: " << (is_admin_ ? "Yes" : "No") << ", Banned: " << (is_banned_ ? "Yes" : "No") << ", Veteran: " << (is_veteran_ ? "Yes" : "No") << std::endl;
+        cout << "User: " << name_ << ", Admin: " << (is_admin_ ? "Yes" : "No") << ", Banned: " << (is_banned_ ? "Yes" : "No") << ", Veteran: " << (is_veteran_ ? "Yes" : "No") << endl;
     }
 
-private:
-    std::string name_;
-    time_t registration_time_;
-    bool is_admin_;
-    bool is_banned_;
-    bool is_veteran_ = false;
 };
 
 int main() {
-    time_t current_time = time(nullptr);
+    int current_time = time(nullptr);
 
     // Задача а)
-    std::vector<User> users = {
+    vector<User> users = {
         {"User1", current_time - 2 * 365 * 24 * 60 * 60},
         {"User2", current_time - 6 * 365 * 24 * 60 * 60},
         {"User3", current_time - 400 * 24 * 60 * 60},
         {"User4", current_time - 7 * 365 * 24 * 60 * 60}
     };
 
-    users.erase(std::remove_if(users.begin(), users.end(),
-                               [current_time](const User& user) {
-                                   return user.is_inactive_for_more_than_one_year(current_time);
-                               }),
-                users.end());
+    users.erase(remove_if(users.begin(), users.end(),
+        [current_time](const User& user) {
+            return user.is_inactive_for_more_than_one_year(current_time);
+        }),
+        users.end());
 
     for (User& user : users) {
         if (user.is_registered_for_more_than_five_years(current_time)) {
@@ -72,8 +71,9 @@ int main() {
         user.print_info();
     }
 
+    cout << "B \n";
     // Задача б)
-    std::list<User> forum_users = {
+    list<User> forum_users = {
         {"Admin1", current_time - 8 * 365 * 24 * 60 * 60, true},
         {"User5", current_time - 3 * 365 * 24 * 60 * 60},
         {"Admin2", current_time - 4 * 365 * 24 * 60 * 60, true},
