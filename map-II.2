@@ -18,7 +18,7 @@ class Author {
 public:
     Author(const string& name, int birthYear, int deathYear)
         : name(name), birthYear(birthYear), deathYear(deathYear) {}
-    
+
     Author()
         : name(" "), birthYear(0), deathYear(0) {}
     string getName() const {
@@ -46,14 +46,14 @@ public:
     }
 
     void removeWork(const string& title) {
-        works.erase(std::remove_if(works.begin(), works.end(),
-            [&](const Work& work) { return work.title == title; }),
+        works.erase(remove_if(works.begin(), works.end(),
+            [&title](const Work& work) { return work.title == title; }),
             works.end());
     }
 
     void updateWork(const string& oldTitle, const string& newTitle, const string& newGenre) {
         auto it = find_if(works.begin(), works.end(),
-            [&](const Work& work) { return work.title == oldTitle; });
+            [&oldTitle](const Work& work) { return work.title == oldTitle; });
         if (it != works.end()) {
             it->title = newTitle;
             it->genre = newGenre;
@@ -106,7 +106,7 @@ public:
             for (const auto& work : author.getWorksByAuthor()) {
                 cout << "  - " << work << "\n";
             }
-            cout << std::endl;
+            cout << endl;
         }
     }
     void addWork(const string& authorName, const string& title, const string& genre) {
