@@ -52,12 +52,23 @@ void quicksort(vector<int>& a, int start, int end)
 
 int main()
 {
-    int n = 5;
-    vector<vector<int>> matrix = { {-3, -2, -1, 0, 1},
-                                  {-2, -1, 0, 1, 2},
-                                  {-1, 0, 2, 1, 3},
-                                  {1, 0, 2, 4, 3},
-                                  {4, 1, 2, 5, 3} };
+    cout << "vvedite razmernost matrizy n*n \n";
+    int n;
+    cin >> n;
+    int x;
+    vector<vector<int>> matrix;
+    
+    cout << "vvedite matrizy n*n \n";
+    for (int i = 0; i < n; i++)
+    {
+        vector<int> row;
+        for (int j = 0; j < n; j++)
+        {
+            cin >> x;
+            row.push_back(x);
+        }
+        matrix.push_back(row);
+    }
 
     for (int i = 0; i < n; i++) {
         vector<int> diagonal;
@@ -86,5 +97,5 @@ int main()
         }
         cout << endl;
     }
-	return 0;
+    return 0;
 }
