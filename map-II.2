@@ -162,54 +162,78 @@ public:
 
 int main()
 {
+    vector<string> imena;
     Library library;
-
-    library.addAuthor("Lev tolstoy", 1828, 1910);
-    library.addAuthor("Fedor Dostoevsky", 1821, 1881);
-
-    library.addWork("Lev tolstoy", "Voyna and mir", "roman");
-    library.addWork("Lev tolstoy", "Anna korenina", "roman");
-    library.addWork("Fedor Dostoevsky", "Prestyplenie and nakasanie", "roman");
-    library.addWork("Fedor Dostoevsky", "Bratya karamsini", "poesia");
-
-    vector<string> tolstoyWorks = library.getWorksByAuthor("Lev tolstoy");
-    for (const auto& work : tolstoyWorks) {
-        cout << work << endl;
+    string im_fam_avtora, ima, fam, nazv_raboti,genre;
+    int godbirth, goddeath;
+    cout << "vvedite kol-vo avtorov, kotorih xotite dobadit: ";
+    int n,n1;
+    cin >> n;
+    cout << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "vvedite ima avtora \n";
+        cin >> ima;
+        cout << "vvedite fam avtora \n";
+        cin >> fam;
+        im_fam_avtora = ima + " " + fam;
+        imena.push_back(im_fam_avtora);
+        cout << endl;
+        cout << "vvedite goda shisni \n";
+        cin >> godbirth >> goddeath;
+        library.addAuthor(im_fam_avtora, godbirth, goddeath);
+        cout << endl;
+        cout << "vvedite kol-vo rabot kotorie xotite dobavit: ";
+        cin >> n1;
+        cout << endl;
+        for (int j = 0; j < n1; j++)
+        {
+            cout << "vvedite nazvanie raboti, a posle nee # \n";
+            getline(cin, nazv_raboti,'#');
+            cout << "vvedite ganr \n";
+            cin >> genre;
+            library.addWork(im_fam_avtora, nazv_raboti, genre);
+            cout << endl;
+        }
     }
 
-    cout << endl;
+    for (int i = 0; i < imena.size(); i++)
+    {
+        vector<string> Works = library.getWorksByAuthor(imena[i]);
+        for (const auto& work : Works) {
+            cout << work << endl;
+        }
+        cout << endl;
+    }
 
-    vector<string> dostoevsky = library.getWorksByAuthor("Fedor Dostoevsky");
-    for (const auto& work : dostoevsky) {
-        cout << work << endl;
+    library.printLibraryInfo();
+
+    string del_genre;
+    cout << "vvedite nazvanie ganra, avtorov bez kotorogo xotite udalit \n";
+    cin >> del_genre;
+
+    library.removeAuthorsWithoutGenre(del_genre);
+    
+    cout << "posle udalenia avtorov bes ganra " << del_genre << endl;
+
+    for (int i = 0; i < imena.size(); i++)
+    {
+        vector<string> Works1 = library.getWorksByAuthor(imena[i]);
+        for (const auto& work : Works1) {
+            cout << work << endl;
+        }
+        cout << endl;
     }
 
     cout << endl;
 
     library.printLibraryInfo();
 
-    library.removeAuthorsWithoutGenre("poesia");
-    cout << "posle udalenia avtorov bes ganra poesia" << endl;
-
-    vector<string> tolstoyWorks1 = library.getWorksByAuthor("Lev tolstoy");
-    for (const auto& work : tolstoyWorks1) {
-        cout << work << endl << endl;;
-    }
-
+    cout << " vvedite ima avtora, godi shisni kotorogo xotite utochnit" << endl;
+    cin >> im_fam_avtora;
     cout << endl;
 
-    vector<string> dostoevsky1 = library.getWorksByAuthor("Fedor Dostoevsky");
-    for (const auto& work : dostoevsky1) {
-        cout << work << endl << endl;
-    }
-
-    cout << endl;
-
-    library.printLibraryInfo();
-
-    cout << " utochnenie godov shisny autora" << endl;
-
-    cout << " dostoevsky   " << library.getBirthYearByAuthor("Fedor Dostoevsky") << " - " << library.getDeathYearByAuthor("Fedor Dostoevsky");
+    cout << im_fam_avtora << ' ' << library.getBirthYearByAuthor(im_fam_avtora) << " - " << library.getDeathYearByAuthor(im_fam_avtora);
 
     return 0;
 }
